@@ -24,7 +24,7 @@ def write_to_file(data: Dict[Any, Any], last_updated: int) -> None:
 
     with open(outdir.joinpath(f"{last_updated}.json"), "w") as f:
         json.dump(data, f, indent=4)
-        logger.debug(f"Wrote data for {last_updated}")
+        logger.info(f"Wrote data for {last_updated}")
 
 
 def stream_data():
@@ -35,13 +35,14 @@ def stream_data():
         data = requests.get("https://shinyrates.com/data/rate").json()
 
         if data == last_data:
-            logger.info("Still nothing")
-            time.sleep(1)
+            logger.debug("Still nothing")
+            time.sleep(60)
+            continue
 
         write_to_file(data, datetime.now().strftime("%Y%m%d_%H%M%S"))
         last_data = copy.deepcopy(data)
-        logger.info("Sleeping")
-        time.sleep(60)
+        logger.debug("Sleeping")
+        time.sleep(300)
 
 
 if __name__ == "__main__":
