@@ -1,7 +1,7 @@
 """
 shinyrates_scraper.py
 
-Scraper to collect data from shinyrates.com every minute.
+Scraper to collect data from shinyrates.com.
 """
 
 import copy
@@ -28,7 +28,13 @@ def write_to_file(data: Dict[Any, Any], last_updated: int) -> None:
 
 
 def stream_data():
-    """Gather data from shinyrates.com every minute"""
+    """
+    Gather data from shinyrates.com whenever it updates
+
+    The website claims to update every minute, but that's clearly not the case based on
+    observations; it had the same data from at least 8:46 AM - 9:55 AM. Sleep for 5
+    minutes and query every minute to see if we ever get different data.
+    """
 
     last_data = None
     while True:
