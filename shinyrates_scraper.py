@@ -32,8 +32,8 @@ def stream_data():
     Gather data from shinyrates.com whenever it updates
 
     The website claims to update every minute, but that's clearly not the case based on
-    observations; it had the same data from at least 8:46 AM - 9:55 AM. Sleep for 5
-    minutes and query every minute to see if we ever get different data.
+    observations; it had the same data from at least 9 AM - 9 PM. Sleep for 5
+    minutes and then query every 5 minutes to see if we ever get different data.
     """
 
     last_data = None
@@ -42,7 +42,7 @@ def stream_data():
 
         if data == last_data:
             logger.debug("Still nothing")
-            time.sleep(60)
+            time.sleep(300)
             continue
 
         write_to_file(data, datetime.now().strftime("%Y%m%d_%H%M%S"))
